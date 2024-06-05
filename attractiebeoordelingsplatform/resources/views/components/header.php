@@ -3,7 +3,7 @@
 <header>
     <div class="container">
         <nav>
-            <img src="<?php echo $base_url; ?>/public_html/img/logo-big-v4.png" alt="logo" class="logo">
+            <img src="<?php echo $base_url; ?>/attractiebeoordelingsplatform/public_html/img/logo-big-v4.png" alt="logo" class="logo">
             <a href="<?php echo $base_url; ?>/attractiebeoordelingsplatform/index.php">Home</a> |
             <a href="<?php echo $base_url; ?>/attractiebeoordelingsplatform/resources/views/meldingen/index.php">Meldingen</a>
            
