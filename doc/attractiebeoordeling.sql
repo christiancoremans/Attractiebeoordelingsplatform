@@ -22,6 +22,13 @@ INSERT INTO `users` (`naam`, `username`, `password`) VALUES
 ('Testgebruiker 2', 'user2', '$2y$10$HoDxSJa/4NcFcJ.U.kj9N.cSBgcm75IwUkdgxJhLjRXY/K2cP8Fl.'),
 ('Testgebruiker 3', 'user3', '$2y$10$M7vkYfdWMYqLzvCqjlOh7.nPc79zwDxtItUOh/91teGikS/XrpNuO');
 
+-- Create the Attractions table
+CREATE TABLE IF NOT EXISTS `attractions` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `naam` VARCHAR(255) NOT NULL,
+  `beschrijving` TEXT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
 
 -- Create the Ratings table
 CREATE TABLE IF NOT EXISTS `ratings` (
