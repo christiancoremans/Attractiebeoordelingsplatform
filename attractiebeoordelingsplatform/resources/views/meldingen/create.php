@@ -1,44 +1,49 @@
 <?php
 session_start();
 if (!isset($_SESSION['username'])):
-    $msg="Je moet eerst inloggen!";
+    $msg = "Je moet eerst inloggen!";
     header("Location: ../../../login.php");
     exit;
 endif;
+
+require_once __DIR__.'/../../../config/conn.php';
+
+$attractions_query = "SELECT id, naam, beschrijving FROM attractions";
+$attractions_stmt = $conn->prepare($attractions_query);
+$attractions_stmt->execute();
+$attractions = $attractions_stmt->fetchAll(PDO::FETCH_ASSOC);
+
+if ($attractions === false) {
+    echo "Error fetching attractions: " . $conn->errorInfo()[2];
+    exit;
+}
 ?>
 
-
-<?php require_once __DIR__.'/../../../config/conn.php'; ?>
 <!doctype html>
 <html lang="nl">
 
 <head>
-    <title>StoringApp / Meldingen / Nieuw</title>
+    <title>Attractie Beoordeling / Nieuwe Beoordeling</title>
     <?php require_once __DIR__.'/../components/head.php'; ?>
     <script>
         function validateForm() {
-            var attractie = document.getElementById("attractie").value;
-            var type = document.getElementById("type").value;
-            var capaciteit = document.getElementById("capaciteit").value;
-            var melder = document.getElementById("melder").value;
+            var attraction_id = document.getElementById("attraction_id").value;
+            var rating = document.getElementById("rating").value;
+            var beschrijving = document.getElementById("beschrijving").value;
 
-            if (attractie.trim() == "") {
-                alert("Vul a.u.b. een attractie in.");
+            if (attraction_id.trim() == "") {
+                alert("Kies a.u.b. een attractie.");
                 return false;
             }
-            if (type.trim() == "") {
-                alert("Kies a.u.b. een type attractie.");
+            if (isNaN(rating) || rating.trim() == "" || rating < 1 || rating > 10) {
+                alert("Vul a.u.b. een geldige beoordeling in (1-10).");
                 return false;
             }
-            if (isNaN(capaciteit) || capaciteit.trim() == "") {
-                alert("Vul a.u.b. een geldige capaciteit in.");
+            if (beschrijving.trim() == "") {
+                alert("Vul a.u.b. een beschrijving in.");
                 return false;
             }
-            if (melder.trim() == "") {
-                alert("Vul a.u.b. een melder in.");
-                return false;
-            }
-            return true; // Als alle validatieregels zijn doorlopen, retourneer true om het formulier te verzenden
+            return true; 
         }
     </script>
 </head>
@@ -47,57 +52,31 @@ endif;
     <?php require_once __DIR__.'/../components/header.php'; ?>
 
     <div class="container">
-        <h1>Nieuwe melding</h1>
-
-        <form action="<?php echo $base_url; ?>/app/Http/Controllers/meldingenController.php" method="POST" onsubmit="return validateForm();">
-            <!-- Hidden input voor het actie -->
+        <h1>Nieuwe Beoordeling</h1>
+        <form action="<?php echo $base_url; ?>/attractiebeoordelingsplatform/app/Http/Controllers/meldingenController.php" method="POST" onsubmit="return validateForm();">
             <input type="hidden" name="action" value="create">
 
             <div class="form-group">
-                <label for="attractie">Naam attractie:</label>
-                <input type="text" name="attractie" id="attractie" class="form-input">
-            </div>
-            <div class="form-group">
-                <label for="type">Type</label>
-                <select name="type" id="type" class="form-input">
-                    <option value="">-- kies een type --</option>
-                    <option value="achtbaan">Achtbaan</option>
-                    <option value="draaiend">Draaiend</option>
-                    <option value="kinder">Kinderattractie</option>
-                    <option value="horeca">Horeca</option>
-                    <option value="show">Show</option>
-                    <option value="water">Water</option>
-                    <option value="overig">Overig</option>
+                <label for="attraction_id">Naam attractie:</label>
+                <select name="attraction_id" id="attraction_id" class="form-input">
+                    <option value="">-- kies een attractie --</option>
+                    <?php foreach($attractions as $attraction): ?>
+                        <option value="<?php echo $attraction['id']; ?>"><?php echo $attraction['naam']; ?></option>
+                    <?php endforeach; ?>
                 </select>
             </div>
             <div class="form-group">
-                <label for="capaciteit">Capaciteit p/uur:</label>
-                <input type="number" min="0" name="capaciteit" id="capaciteit" class="form-input">
+                <label for="rating">Beoordeling (1-10):</label>
+                <input type="number" min="1" max="10" name="rating" id="rating" class="form-input">
             </div>
             <div class="form-group">
-                <label for="melder">Naam melder:</label>
-                <input type="text" name="melder" id="melder" class="form-input">
-            </div>
-            <div class="form-group">
-                <label for="id">ID:</label>
-                <input type="number" min="1" name="id" id="id" class="form-input">
-            </div>
-            <div class="form-group">
-                <label>
-                    <input type="checkbox" name="prioriteit" id="prioriteit">
-                    Melding met prioriteit
-                </label>
-            </div>
-            <div class="form-group">
-                <label for="overig">Overige info:</label>
-                <textarea name="overig" id="overig" class="form-input" rows="4"></textarea>
+                <label for="beschrijving">Beschrijving:</label>
+                <textarea name="beschrijving" id="beschrijving" class="form-input" rows="4"></textarea>
             </div>
 
-            <input type="submit" value="Verstuur melding">
-
+            <input type="submit" value="Verstuur Beoordeling">
         </form>
     </div>
-
 </body>
 
 </html>

@@ -10,8 +10,8 @@
         </nav>
         <div>
         <?php 
-        if(isset($_SESSION['username']) == true): ?><p><a href="<?php echo $base_url; ?>/logout.php">Uitloggen</a></p>
-        <?php else: ?><p><a href="<?php echo $base_url; ?>/login.php">Inloggen</a></p>
+        if(isset($_SESSION['username']) == true): ?><p><a href="<?php echo $base_url; ?>/attractiebeoordelingsplatform/logout.php">Uitloggen</a></p>
+        <?php else: ?><p><a href="<?php echo $base_url; ?>/attractiebeoordelingsplatform/login.php">Inloggen</a></p>
         <?php endif; ?>
         </div>
     </div>

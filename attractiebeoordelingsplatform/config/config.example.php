@@ -7,7 +7,7 @@
 //Deze config wordt hierna _niet_ meegestuurd naar je groepsgenoten. Zo kan iedereen zijn eigen wachtwoord, etc. invullen.
 
 $dbHost = 'localhost';
-$dbName = 'storingapp';
+$dbName = 'attractiebeoordeling';
 $dbUser = 'root';
 $dbPass = '';
 
